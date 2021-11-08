@@ -10,43 +10,39 @@ let sumArr = [];
 class Die {
     constructor() {
         diceCount++;
-        let newDiv = document.createElement('div');
-        newDiv.className = 'square text-center align-content';
-        this.divID = diceCount;
-        newDiv.id = diceCount.toString();
-        this.text = newDiv.id;
-        newDiv.textContent = this.text;
+        this.value = randomVal(1, 7);
+        this.div = document.createElement('div');
+        this.div.className = 'square text-center align-content';
+        this.div.id = diceCount.toString();
         this.roll();
-        newDiv.addEventListener('click', () => {
+        this.div.addEventListener('click', () => {
             this.roll();
         });
-        newDiv.addEventListener('dblclick', () => {
+        this.div.addEventListener('dblclick', () => {
             this.removeDie();
         });
-        resultsDiv.appendChild(newDiv);
+        resultsDiv.appendChild(this.div);
     }
     roll() {
-        let newValue;
-        newValue = randomVal(1, 7);
-        let i = this.divID - 1;
+        let i = parseInt(this.div.id) - 1;
         let cleanArr = sumArr.filter(j => typeof (j) === "number");
         sumArr = cleanArr;
         if (sumArr[i] == null) {
-            sumArr[i] = newValue;
-            this.text = newValue.toString();
+            sumArr[i] = this.value;
+            this.div.textContent = this.value.toString();
         }
         else if (i == diceCount) {
-            this.text = newValue.toString();
-            sumArr.push(newValue);
+            this.div.textContent = this.value.toString();
+            sumArr.push(this.value);
         }
         else {
-            sumArr[i] = (newValue);
-            this.text = newValue.toString();
+            sumArr[i] = this.value;
+            this.div.textContent = this.value.toString();
         }
         console.log(sum, sumArr);
     }
     removeDie() {
-        let index = this.divID - 1;
+        let index = parseInt(this.div.id) - 1;
         let el = sumArr[index];
         /*for (let j = sumArr.length - 1; j >= 0; j--) {
             if (sumArr[j] == index) {
@@ -54,7 +50,7 @@ class Die {
             }
         };*/
         sumArr.splice(index, 1);
-        this.remove();
+        this.div.remove();
         console.log(sumArr);
     }
 }
@@ -83,7 +79,7 @@ function rerollDice() {
             sumArr.splice(j, 1, value);
         }
         ;
-        cells[i].textContent = value;
+        cells[i].textContent = value.toString();
         /*let id = index + 1;
         let reroll = document.getElementById(id);*/
         //console.log(cells[i], value, sumArr);  

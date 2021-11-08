@@ -1,8 +1,8 @@
-let makeDice: HTMLElement = document.getElementById('generateDie') as HTMLElement;
-let resultsDiv: HTMLElement = document.getElementById('results') as HTMLElement;
-let rollDice: HTMLElement = document.getElementById('rollDice') as HTMLElement;
-let sumDice: HTMLElement = document.getElementById('sumDice') as HTMLElement;
-let sumDisplay: HTMLElement = document.getElementById('sum') as HTMLElement;
+let makeDice = <HTMLButtonElement>document.getElementById('generateDie');
+let resultsDiv = <HTMLDivElement>document.getElementById('results');
+let rollDice = <HTMLButtonElement>document.getElementById('rollDice');
+let sumDice = <HTMLButtonElement>document.getElementById('sumDice');
+let sumDisplay= <HTMLDivElement>document.getElementById('sum');
 
 let diceCount = 0;
 
@@ -11,49 +11,42 @@ let sum = 0;
 let sumArr: Array<number> = [];
 
 class Die {
-    divID: number;
-    text: string;
-
+    div: HTMLDivElement;
+    value: number;
     constructor() {
         diceCount++
-        let newDiv: HTMLElement = document.createElement('div');
-        newDiv.className = 'square text-center align-content';
-        this.divID = diceCount;
-        newDiv.id = diceCount.toString();
-        this.text = newDiv.id;
-        newDiv.textContent = this.text;
+        this.value = randomVal(1, 7);
+        this.div = document.createElement('div');
+        this.div.className = 'square text-center align-content';
+        this.div.id = diceCount.toString();
         this.roll();
-        newDiv.addEventListener('click', () => {
+        this.div.addEventListener('click', () => {
             this.roll();
         });
-        newDiv.addEventListener('dblclick', () => {
+        this.div.addEventListener('dblclick', () => {
             this.removeDie();
         })
-        resultsDiv.appendChild(newDiv);
+        resultsDiv.appendChild(this.div);
     }
-
     roll() {
-        let newValue: number;
-        newValue = randomVal(1, 7);
-        let i = this.divID - 1;
+        let i = parseInt(this.div.id) - 1;
         let cleanArr = sumArr.filter(j => typeof(j) === "number");
         sumArr = cleanArr;
-        
         if (sumArr[i] == null) {       
-            sumArr[i] = newValue;
-            this.text = newValue.toString();
+            sumArr[i] = this.value;
+            this.div.textContent = this.value.toString();
         } else if (i == diceCount) {
-            this.text = newValue.toString();
-            sumArr.push(newValue);
+            this.div.textContent = this.value.toString();
+            sumArr.push(this.value);
         } else {
-            sumArr[i] = (newValue);
-            this.text = newValue.toString();
+            sumArr[i] = this.value;
+            this.div.textContent = this.value.toString();
         }
         console.log(sum, sumArr);
     }
     
     removeDie() {
-        let index = this.divID - 1;
+        let index = parseInt(this.div.id) - 1;
         let el = sumArr[index];
         /*for (let j = sumArr.length - 1; j >= 0; j--) {
             if (sumArr[j] == index) {
@@ -61,7 +54,7 @@ class Die {
             }
         };*/
         sumArr.splice(index, 1);
-        this.remove();
+        this.div.remove();
         console.log(sumArr);
     }
 };
